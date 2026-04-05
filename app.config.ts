@@ -11,9 +11,20 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   userInterfaceStyle: 'light',
   scheme: 'taxifarezurichairport',
   jsEngine: 'hermes',
+  icon: './assets/icon.png',
+  splash: {
+    image: './assets/splash-icon.png',
+    resizeMode: 'contain',
+    backgroundColor: '#F4F7FB',
+  },
   android: {
     package: 'com.taxifarezurichairport.app',
     softwareKeyboardLayoutMode: 'resize',
+    "icon": "./assets/icon.png",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon-foreground.png",
+        "backgroundImage": "./assets/adaptive-icon-background.png"
+      },
   },
   plugins: [
     [

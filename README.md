@@ -126,6 +126,7 @@ npx expo prebuild -p android
 |-- package.json
 |-- tsconfig.json
 |-- .env.example
+|-- assets
 |-- src
 |   |-- components
 |   |-- config
@@ -170,6 +171,23 @@ Der Google API Key ist nicht im Code verteilt, sondern wird sauber zentralisiert
 - Eingabe in `.env`
 - Einlesen in `app.config.ts`
 - Zugriff in der App ueber `src/config/env.ts`
+
+### App Icons und Splash Placeholder
+
+Im Projekt liegen bereits einfache Placeholder-Dateien:
+
+- `assets/icon.png`
+- `assets/adaptive-icon-background.png`
+- `assets/adaptive-icon-foreground.png`
+- `assets/splash-icon.png`
+
+Diese Dateien sind in `app.config.ts` bereits eingebunden. Fuer eigene finale Assets muessen die Dateien einfach mit neuen PNGs gleichen Namens ersetzt werden oder die Pfade in `app.config.ts` angepasst werden.
+
+Empfohlene Formate:
+
+- App Icon: 1024 x 1024 PNG
+- Android Adaptive Icon Foreground: 1024 x 1024 PNG mit genug Rand
+- Splash Icon: quadratisches PNG mit transparentem oder hellem Hintergrund
 
 ## Erklaerung der Preisberechnung
 
