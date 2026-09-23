@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { Ionicons } from '@expo/vector-icons';
 import {
   Keyboard,
   LayoutChangeEvent,
@@ -19,6 +20,7 @@ import type { DestinationSuggestion } from '@/types/location';
 type DestinationSearchCardProps = {
   query: string;
   onChangeText: (value: string) => void;
+  onClear: () => void;
   selectedLabel?: string;
   suggestions: DestinationSuggestion[];
   showSuggestions: boolean;
@@ -29,6 +31,7 @@ type DestinationSearchCardProps = {
 export function DestinationSearchCard({
   query,
   onChangeText,
+  onClear,
   selectedLabel,
   suggestions,
   showSuggestions,
@@ -43,6 +46,7 @@ export function DestinationSearchCard({
     height: 56,
   });
   const comboBoxRef = useRef<View>(null);
+  const inputRef = useRef<TextInput>(null);
 
   useEffect(() => {
     const showSubscription = Keyboard.addListener('keyboardDidShow', (event) => {
@@ -82,6 +86,11 @@ export function DestinationSearchCard({
     ? Math.max(180, inputLayout.pageY - 24)
     : Math.max(180, spaceBelow);
 
+  function handleClear() {
+    onClear();
+    inputRef.current?.focus();
+  }
+
   return (
     <View style={styles.root}>
       <AppCard>
@@ -93,6 +102,7 @@ export function DestinationSearchCard({
         <View style={styles.comboArea}>
           <View ref={comboBoxRef} style={styles.comboBox} onLayout={handleInputLayout}>
             <TextInput
+              ref={inputRef}
               value={query}
               onChangeText={onChangeText}
               placeholder={t('home.destinationPlaceholder')}
@@ -102,6 +112,17 @@ export function DestinationSearchCard({
               autoCorrect={false}
               returnKeyType="search"
             />
+            {query.length > 0 ? (
+              <Pressable
+                accessibilityRole="button"
+                accessibilityLabel={t('home.clearDestination')}
+                hitSlop={8}
+                onPress={handleClear}
+                style={({ pressed }) => [styles.clearButton, pressed && styles.clearButtonPressed]}
+              >
+                <Ionicons name="close-circle" size={22} color={theme.colors.textMuted} />
+              </Pressable>
+            ) : null}
           </View>
 
           {showSuggestions ? (
@@ -173,6 +194,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
   },
   comboBox: {
+    position: 'relative',
     borderRadius: theme.radius.md,
     borderWidth: 1,
     borderColor: theme.colors.border,
@@ -181,9 +203,23 @@ const styles = StyleSheet.create({
   },
   input: {
     minHeight: 56,
-    paddingHorizontal: theme.spacing.md,
+    paddingLeft: theme.spacing.md,
+    paddingRight: 52,
     fontSize: 16,
     color: theme.colors.text,
+  },
+  clearButton: {
+    position: 'absolute',
+    right: 8,
+    top: 8,
+    width: 40,
+    height: 40,
+    borderRadius: theme.radius.pill,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  clearButtonPressed: {
+    backgroundColor: theme.colors.surfaceMuted,
   },
   hint: {
     marginTop: theme.spacing.sm,

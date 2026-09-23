@@ -22,6 +22,7 @@ export const en = {
       heroSubtitle:
         'Choose a HERE-verified destination and the app calculates distance, traffic-aware travel time, and the estimated fare.',
       destinationPlaceholder: 'Enter destination address or place',
+      clearDestination: 'Clear destination',
       destinationHint: 'Calculation is only available after selecting a HERE suggestion.',
       destinationDropdownLabel: 'HERE suggestions',
       resultTitle: 'Estimated fare',

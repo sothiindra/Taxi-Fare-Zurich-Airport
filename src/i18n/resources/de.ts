@@ -22,6 +22,7 @@ export const de = {
       heroSubtitle:
         'Wählen Sie ein von HERE geprüftes Ziel. Die App berechnet daraus Distanz, verkehrsabhängige Fahrzeit und den geschätzten Fahrpreis.',
       destinationPlaceholder: 'Zieladresse oder Ort eingeben',
+      clearDestination: 'Zieleingabe löschen',
       destinationHint: 'Die Berechnung ist erst nach Auswahl eines HERE-Vorschlags möglich.',
       destinationDropdownLabel: 'HERE-Vorschläge',
       resultTitle: 'Estimated fare',

@@ -44,23 +44,33 @@ export function HomeScreen() {
       return;
     }
 
+    let isCancelled = false;
     const timeoutId = setTimeout(() => {
       void (async () => {
         try {
           setLoadingSuggestions(true);
           setErrorCode(null);
           const nextSuggestions = await fetchDestinationSuggestions(trimmed, language);
-          setSuggestions(nextSuggestions);
+          if (!isCancelled) {
+            setSuggestions(nextSuggestions);
+          }
         } catch (error) {
-          setErrorCode(error instanceof Error ? error.message : 'default');
-          setSuggestions([]);
+          if (!isCancelled) {
+            setErrorCode(error instanceof Error ? error.message : 'default');
+            setSuggestions([]);
+          }
         } finally {
-          setLoadingSuggestions(false);
+          if (!isCancelled) {
+            setLoadingSuggestions(false);
+          }
         }
       })();
     }, 320);
 
-    return () => clearTimeout(timeoutId);
+    return () => {
+      isCancelled = true;
+      clearTimeout(timeoutId);
+    };
   }, [query, language, ready, selectedDestination]);
 
   const canCalculate = Boolean(selectedDestination) && !loadingFare;
@@ -131,6 +141,15 @@ export function HomeScreen() {
     setErrorCode(null);
   }
 
+  function handleClearDestination() {
+    setQuery('');
+    setSelectedDestination(null);
+    setSuggestions([]);
+    setLoadingSuggestions(false);
+    setFareBreakdown(null);
+    setErrorCode(null);
+  }
+
   return (
     <ScreenBackground>
       <SectionTitle
@@ -148,6 +167,7 @@ export function HomeScreen() {
       <DestinationSearchCard
         query={query}
         onChangeText={handleQueryChange}
+        onClear={handleClearDestination}
         selectedLabel={selectedDestination ? t('common.validatedSelection') : undefined}
         suggestions={suggestions}
         showSuggestions={showSuggestionBlock}
