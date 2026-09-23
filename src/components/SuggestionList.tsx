@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 
 import { AppCard } from '@/components/AppCard';
 import { theme } from '@/theme';
-import type { DestinationSuggestion } from '@/types/google';
+import type { DestinationSuggestion } from '@/types/location';
 
 type SuggestionListProps = {
   suggestions: DestinationSuggestion[];
@@ -29,7 +29,7 @@ export function SuggestionList({
         ) : null}
         {suggestions.map((item) => (
           <Pressable
-            key={item.placeId}
+            key={item.id}
             onPress={() => onSelect(item)}
             style={({ pressed }) => [styles.item, pressed && styles.itemPressed]}
           >
@@ -37,7 +37,7 @@ export function SuggestionList({
             {item.subtitle ? <Text style={styles.itemSubtitle}>{item.subtitle}</Text> : null}
           </Pressable>
         ))}
-        <Text style={styles.poweredBy}>{t('common.poweredByGoogle')}</Text>
+        <Text style={styles.poweredBy}>{t('common.poweredByHere')}</Text>
       </View>
     </AppCard>
   );

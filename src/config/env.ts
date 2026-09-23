@@ -1,12 +1,12 @@
 import Constants from 'expo-constants';
 
-const googleMapsApiKey =
-  Constants.expoConfig?.extra?.googleMapsApiKey ??
-  process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY ??
+const hereApiKey =
+  Constants.expoConfig?.extra?.hereApiKey ??
+  process.env.EXPO_PUBLIC_HERE_API_KEY ??
   '';
 
 export const env = {
-  googleMapsApiKey,
+  hereApiKey,
 };
 
-export const hasGoogleMapsKey = Boolean(googleMapsApiKey);
+export const hasHereApiKey = Boolean(hereApiKey);

@@ -1,120 +1,184 @@
 # Taxi Fare: Zurich Airport
 
-Taxi Fare: Zurich Airport ist eine moderne, Android-fokussierte React-Native-App mit Expo, die den geschaetzten Taxipreis vom Flughafen Zurich zu einem frei waehlbaren Ziel berechnet. Die App ist bewusst kein Buchungsprodukt, sondern ein klar fokussierter Preisrechner mit Google-validierter Zielauswahl, verkehrsbasierter Fahrzeit und transparenter Kostenaufschluesselung.
+Eine moderne Expo-/React-Native-App für Android, die den geschätzten Taxipreis vom Ankunftsbereich des Flughafens Zürich zu einem frei wählbaren Ziel berechnet. Die App ist keine Buchungs-App. Sie zeigt ausschliesslich eine Schätzung mit transparenter Kostenaufschlüsselung.
 
-## Projektuebersicht
+## Funktionen
 
-Die App besteht aus zwei Screens:
+- Fester Abfahrtsort: Flughafen Zürich Arrival
+- Adressen, Orte und Points of Interest über HERE Autosuggest
+- Berechnung nur nach Auswahl eines von HERE geprüften Vorschlags
+- Auflösung der gewählten HERE-ID in eindeutige Koordinaten
+- Fahrdistanz und verkehrsabhängige Fahrzeit über HERE Routing API v8
+- Keine Karte und keine Routenansicht
+- Tarifberechnung in CHF
+- Deutsch als Standardsprache sowie Englisch
+- Lokal gespeicherte Sprache und letzte Ziele
+- Expo SDK 57 und Android API 36
 
-- Hauptscreen fuer Zieleingabe, Live-Vorschlaege, Berechnung und Ergebnisdarstellung
-- Settings-Screen fuer die manuelle Sprachumschaltung und das Loeschen lokal gespeicherter letzter Ziele
+## Tarif
 
-Der Startpunkt ist immer fix auf den Flughafen Zurich Arrival gesetzt. Nutzer geben nur das Ziel ein, waehlen einen von Google validierten Vorschlag aus und starten dann die Berechnung.
+Die Werte befinden sich zentral in `src/constants/tariff.ts`:
 
-## Ziel der App
+- Grundgebühr: 6.00 CHF
+- Distanzpreis: 4.40 CHF pro Kilometer
+- Zeitpreis: 0.80 CHF pro Minute
 
-Die App soll schnell und verstaendlich beantworten:
+```text
+Gesamtpreis = 6.00 + (Kilometer × 4.40) + (Minuten × 0.80)
+```
 
-- Wie weit ist das Ziel vom Flughafen Zurich entfernt?
-- Wie lange dauert die Fahrt unter Beruecksichtigung des aktuellen Verkehrs?
-- Wie hoch ist der geschaetzte Fahrpreis nach der fest vorgegebenen Tariflogik?
-
-Es werden keine Karten, keine Polylines und keine Routenansichten angezeigt. Die App konzentriert sich ausschliesslich auf Schaetzung, Distanz, Zeit und Kostenaufschluesselung.
-
-## Feature-Uebersicht
-
-- Fixer Abfahrtsort: Flughafen Zurich
-- Freie Zieleingabe
-- Google Places Autocomplete fuer Live-Vorschlaege
-- Berechnung erst nach Auswahl eines Google-validierten Vorschlags
-- Google Routes API fuer Distanz und verkehrsabhaengige Fahrzeit
-- Ergebnis-Card mit Estimated fare, Grundgebuehr, Distanzkosten, Zeitkosten, Gesamtpreis, Distanz und Fahrzeit
-- Deutsche Standardsprache beim ersten Start
-- Zusaetzliche englische Lokalisierung
-- Manuelle Sprachumschaltung im Settings-Screen
-- Lokale Speicherung der gewaehlten Sprache
-- Einfache lokale Speicherung letzter Ziele
-- Loeschfunktion fuer die Zielhistorie
-- Zentrale Tarifdefinition
-- Gekapselte API-Schicht fuer spaetere Erweiterungen
+Die verkehrsabhängige HERE-Fahrtdauer wird für die Zeitkosten verwendet. Geldbeträge werden auf zwei Nachkommastellen gerundet und in CHF formatiert.
 
 ## Tech-Stack
 
-- Expo
-- React Native
-- TypeScript
-- React Navigation Native Stack
-- react-i18next und i18next
+- Expo SDK 57
+- React Native 0.86
+- React Native und TypeScript
+- React Navigation
+- i18next und react-i18next
 - AsyncStorage
-- Google Places API
-- Google Routes API
-- expo-build-properties
-- expo-linear-gradient
+- HERE Geocoding & Search API v7
+- HERE Routing API v8
 
 ## Voraussetzungen
 
-Vor dem lokalen Start sollten folgende Dinge verfuegbar sein:
-
-- Node.js 20 oder neuer
+- Node.js 22.13 oder neuer
 - npm
-- Android Studio inklusive Android SDK
-- Ein Android Emulator oder ein physisches Android-Geraet
-- Ein Google-Cloud-Projekt mit aktivierter Abrechnung
-- Ein Google Maps Platform API Key
+- Für Expo Go: aktuelles Expo Go auf einem Android-Gerät oder Android-Emulator
+- Für native Builds: Android Studio mit Android SDK 36 oder neuer
+- Kostenloses HERE-Konto
+- HERE API Key
 
-## Installationsanleitung
+## Installation
 
-### 1. Abhaengigkeiten installieren
-
-```bash
+```powershell
 npm install
+Copy-Item .env.example .env
 ```
 
-### 2. Environment-Datei anlegen
-
-```bash
-copy .env.example .env
-```
-
-Danach den Google API Key in `.env` eintragen:
+Trage danach deinen HERE API Key in `.env` ein:
 
 ```env
-EXPO_PUBLIC_GOOGLE_MAPS_API_KEY=dein_google_maps_api_key
+EXPO_PUBLIC_HERE_API_KEY=dein_here_api_key
 ```
 
-## Schritte zum lokalen Starten des Projekts
+Starte Expo nach jeder Änderung an `.env` vollständig neu:
 
-### Entwicklungsserver starten
-
-```bash
-npm run start
+```powershell
+npx expo start --clear
 ```
 
-### Android lokal starten
+Öffne danach Expo Go und scanne den QR-Code. Bei einem angeschlossenen Android-Gerät oder laufenden Emulator kann Expo Go direkt gestartet werden:
 
-```bash
+```powershell
 npm run android
 ```
 
-Alternativ kann die App ueber die Expo-CLI auf einem Emulator oder Android-Geraet gestartet werden.
+`npm run android` startet bewusst Expo Go. Für einen lokalen nativen Android-Build steht separat folgender Befehl zur Verfügung:
 
-## Android-Hinweise
-
-Die App ist fuer Android ausgelegt. In `app.config.ts` ist die Android-Konfiguration bewusst explizit hinterlegt.
-
-Wichtige Punkte:
-
-- compileSdkVersion: 35
-- targetSdkVersion: 35
-- buildToolsVersion: 35.0.0
-
-Diese Werte werden ueber das Expo-Plugin `expo-build-properties` gesetzt.
-
-Falls spaeter native Android-Dateien erzeugt werden sollen:
-
-```bash
-npx expo prebuild -p android
+```powershell
+npm run android:native
 ```
+
+## HERE API Key Schritt für Schritt einrichten
+
+### 1. HERE-Konto erstellen
+
+1. Öffne [HERE Platform](https://platform.here.com/).
+2. Erstelle ein Konto oder melde dich an.
+3. Wähle einen für dein Nutzungsvolumen passenden Plan. Für Entwicklung und private Nutzung reicht normalerweise der kostenlose Einstiegstarif.
+4. Prüfe auf der [HERE-Preisseite](https://www.here.com/get-started/pricing), welche aktuellen Tageslimits für deinen Plan gelten.
+
+### 2. Eine HERE-App registrieren
+
+1. Öffne in der HERE Platform den `Access Manager`.
+2. Wechsle zum Bereich `Apps`.
+3. Klicke auf `Register new app`.
+4. Verwende beispielsweise den Namen `Taxi Fare: Zurich Airport`.
+5. Füge optional eine kurze Beschreibung hinzu.
+6. Schliesse die Registrierung ab.
+
+HERE erstellt dabei eine eindeutige App-ID. Eine HERE-App sollte nur für diese Anwendung verwendet werden.
+
+### 3. API Key erzeugen
+
+1. Öffne die gerade registrierte HERE-App.
+2. Wechsle zum Tab `Credentials`.
+3. Öffne den Bereich `API Keys`.
+4. Klicke auf `Create API key`.
+5. Bewahre den Schlüssel sicher auf und veröffentliche ihn nicht in Git.
+
+HERE erlaubt üblicherweise zwei API Keys pro registrierter App. Damit kann später ein Schlüssel ausgetauscht werden, ohne die App sofort zu unterbrechen.
+
+### 4. Benötigte HERE-Dienste prüfen
+
+Diese App benötigt Zugriff auf:
+
+- Geocoding & Search API v7
+  - Autosuggest für Live-Vorschläge
+  - Lookup für die Koordinaten eines ausgewählten Vorschlags
+- Routing API v8
+  - Fahrdistanz
+  - Fahrtdauer mit aktuellem Verkehr
+
+Bei HERE werden diese Dienste über die Berechtigungen und Limits deines Plans bereitgestellt. Falls ein Dienst im Konto nicht verfügbar ist, prüfe den gewählten Plan und die App-Berechtigungen.
+
+### 5. API Key lokal eintragen
+
+Lege im Projektstamm eine Datei `.env` an. Als Vorlage dient `.env.example`:
+
+```env
+EXPO_PUBLIC_HERE_API_KEY=dein_here_api_key
+```
+
+Die echte `.env` ist über `.gitignore` ausgeschlossen und darf nicht committed werden.
+
+### 6. Expo neu starten
+
+Eine laufende Expo-Instanz übernimmt geänderte Environment-Variablen nicht immer automatisch. Stoppe Expo und starte mit geleertem Cache neu:
+
+```powershell
+npx expo start --clear
+```
+
+Zum erneuten Start in Expo Go:
+
+```powershell
+npm run android
+```
+
+### 7. Integration testen
+
+1. Öffne die App.
+2. Tippe mindestens drei Zeichen in das Zielfeld.
+3. Prüfe, ob `Powered by HERE` und passende Vorschläge erscheinen.
+4. Wähle einen Vorschlag aus.
+5. Tippe auf `Preis schätzen`.
+6. Prüfe, ob Distanz, Fahrzeit und Preis erscheinen.
+
+Die Fahrzeit nutzt aktuellen Verkehr, weil die Routing-Anfrage keine feste Abfahrtszeit übermittelt. HERE verwendet in diesem Fall automatisch den Zeitpunkt der Anfrage und aktiviert verkehrsabhängiges Routing.
+
+## Sicherheit des API Keys
+
+`EXPO_PUBLIC_`-Variablen sind in einer gebauten mobilen App grundsätzlich auslesbar. Die `.env` verhindert nur, dass der Schlüssel versehentlich ins Repository gelangt; sie macht ihn im APK nicht geheim.
+
+Für diese private erste Version entspricht das der gewünschten Architektur. Für eine öffentlich verteilte App empfiehlt sich später:
+
+- ein kleiner eigener Proxy-Server
+- serverseitige HERE-Zugangsdaten
+- Authentifizierung der App gegenüber dem Proxy
+- serverseitige Ratenbegrenzung
+- Überwachung der HERE-Nutzung und Limits
+
+## HERE-Ablauf in der App
+
+1. Autosuggest liefert Vorschläge während der Eingabe.
+2. Jeder auswählbare Vorschlag enthält eine eindeutige HERE-ID.
+3. Lookup löst die HERE-ID in Koordinaten auf.
+4. Routing API v8 berechnet die Route vom festen Flughafen-Startpunkt zu diesen Koordinaten.
+5. Die Summen aller Routensektionen liefern Meter und Sekunden.
+6. `duration` enthält die verkehrsabhängige Dauer; `baseDuration` wird nur intern als Referenz gespeichert.
+7. Die Tariflogik berechnet daraus den geschätzten Fahrpreis.
 
 ## Projektstruktur
 
@@ -122,10 +186,6 @@ npx expo prebuild -p android
 .
 |-- App.tsx
 |-- app.config.ts
-|-- babel.config.js
-|-- package.json
-|-- tsconfig.json
-|-- .env.example
 |-- assets
 |-- src
 |   |-- components
@@ -136,264 +196,86 @@ npx expo prebuild -p android
 |   |-- providers
 |   |-- screens
 |   |-- services
+|   |   |-- hereLocation.ts
+|   |   `-- storage.ts
 |   |-- theme
 |   |-- types
+|   |   `-- location.ts
 |   `-- utils
 `-- README.md
 ```
 
-### Wichtige Dateien im Detail
+Wichtige Dateien:
 
-- `App.tsx`: Einstiegspunkt der App mit Navigation, Theme und Providern
-- `app.config.ts`: Expo-App-Konfiguration, Android-SDK-Werte und zentrale Bereitstellung des API Keys
-- `src/constants/app.ts`: Feste Definition des Startpunkts Flughafen Zurich sowie Storage-Keys
-- `src/constants/tariff.ts`: Zentrale Tarifwerte
-- `src/services/googleMaps.ts`: Gekapselte Google-API-Aufrufe fuer Autocomplete und Routenberechnung
-- `src/services/storage.ts`: Lokale Speicherung fuer Sprache und letzte Ziele
-- `src/utils/fare.ts`: Preisberechnung anhand der Tariflogik
+- `src/services/hereLocation.ts`: HERE Autosuggest, Lookup und Routing
+- `src/config/env.ts`: zentraler Zugriff auf den HERE API Key
+- `src/constants/app.ts`: fixer Startpunkt Flughafen Zürich Arrival
+- `src/constants/tariff.ts`: zentrale Tarifwerte
+- `src/utils/fare.ts`: Preisberechnung
 - `src/utils/format.ts`: CHF-, Distanz- und Zeitformatierung
-- `src/i18n/index.ts`: Initialisierung der Lokalisierung
+- `src/i18n/resources/de.ts`: Schweizer Hochdeutsch
+- `src/i18n/resources/en.ts`: englische Übersetzung
 
-## Konfigurationshinweise
+## Lokalisierung
 
-### Startpunkt ist fest definiert
+Die App startet beim ersten Mal auf Deutsch. Die Sprache wird nicht automatisch anhand der Gerätesprache geändert. Nutzer können Deutsch oder Englisch im Settings-Screen wählen. Die Auswahl wird über AsyncStorage gespeichert.
 
-Der Abfahrtsort ist zentral in `src/constants/app.ts` konfiguriert. Verwendet werden feste Koordinaten fuer den Flughafen Zurich:
+Die deutschen Texte verwenden Schweizer Hochdeutsch, insbesondere `ss` statt `ß`.
 
-- Latitude: 47.458056
-- Longitude: 8.548056
-- IATA: ZRH
+## Lokale Speicherung
 
-### Environment-Konfiguration
+Gespeichert werden:
 
-Der Google API Key ist nicht im Code verteilt, sondern wird sauber zentralisiert:
+- die gewählte Sprache
+- bis zu fünf zuletzt verwendete HERE-Ziele
 
-- Eingabe in `.env`
-- Einlesen in `app.config.ts`
-- Zugriff in der App ueber `src/config/env.ts`
+Alte Ziel-IDs anderer Anbieter werden beim Laden verworfen, da sie nicht mit HERE Lookup kompatibel sind. Der Verlauf kann im Settings-Screen vollständig gelöscht werden.
 
-### App Icons und Splash Placeholder
+## App Icons
 
-Im Projekt liegen bereits einfache Placeholder-Dateien:
+Folgende Placeholder sind bereits eingebunden:
 
 - `assets/icon.png`
-- `assets/adaptive-icon-background.png`
 - `assets/adaptive-icon-foreground.png`
+- `assets/adaptive-icon-background.png`
 - `assets/splash-icon.png`
 
-Diese Dateien sind in `app.config.ts` bereits eingebunden. Fuer eigene finale Assets muessen die Dateien einfach mit neuen PNGs gleichen Namens ersetzt werden oder die Pfade in `app.config.ts` angepasst werden.
+Die Dateien können später durch finale PNGs mit denselben Namen ersetzt werden. Empfohlen sind 1024 × 1024 Pixel.
 
-Empfohlene Formate:
+## Troubleshooting
 
-- App Icon: 1024 x 1024 PNG
-- Android Adaptive Icon Foreground: 1024 x 1024 PNG mit genug Rand
-- Splash Icon: quadratisches PNG mit transparentem oder hellem Hintergrund
+### Keine Vorschläge erscheinen
 
-## Erklaerung der Preisberechnung
+- Prüfe, ob `.env` vorhanden ist.
+- Prüfe den Namen `EXPO_PUBLIC_HERE_API_KEY` auf Tippfehler.
+- Starte Expo mit `npx expo start --clear` neu.
+- Prüfe in der HERE Platform, ob der Schlüssel aktiv ist.
+- Prüfe, ob das Tageslimit erreicht wurde.
 
-Die App verwendet exakt diese Tariflogik:
+### Fehler 401 oder 403
 
-- Grundgebuehr: 6.00 CHF
-- Pro Kilometer: 4.40 CHF
-- Pro Minute: 0.80 CHF
+- Der API Key ist ungültig, deaktiviert oder besitzt nicht die nötigen Berechtigungen.
+- Erzeuge bei Bedarf einen neuen Key in `Access Manager` → `Apps` → `Credentials`.
+- Prüfe, ob Geocoding & Search und Routing im gewählten Plan enthalten sind.
 
-Formel:
+### Fehler 429
 
-```text
-Gesamtpreis = 6.00 + (Kilometer * 4.40) + (Minuten * 0.80)
-```
+Das Anfrage- oder Tageslimit wurde erreicht. Warte bis zur Rücksetzung des Limits oder passe den HERE-Plan an. Die App reduziert Autosuggest-Anfragen bereits mit einer kurzen Verzögerung nach der Eingabe.
 
-Technischer Ablauf:
+### Ziel kann nicht aufgelöst werden
 
-1. Der Nutzer gibt ein Ziel ein.
-2. Google Places liefert Vorschlaege.
-3. Der Nutzer waehlt einen validierten Vorschlag aus.
-4. Google Routes liefert Distanz und verkehrsabhaengige Fahrzeit.
-5. `src/utils/fare.ts` berechnet Grundgebuehr, Distanzkosten, Zeitkosten und Gesamtpreis.
-6. `src/utils/format.ts` formatiert die Ausgabe fuer die UI.
+HERE Autosuggest kann auch allgemeine Suchvorschläge liefern. Die App zeigt nur Einträge mit HERE-ID an. Falls Lookup trotzdem keine Position liefert, wähle einen anderen Vorschlag.
 
-## Hinweise zur Lokalisierung
+### Route kann nicht berechnet werden
 
-Die App startet standardmaessig auf Deutsch und unterstuetzt zusaetzlich Englisch.
+- Das Ziel ist eventuell nicht mit dem Auto erreichbar.
+- Prüfe den Routing-Zugriff des API Keys.
+- Teste eine normale Strassenadresse als Ziel.
 
-Eigenschaften:
+## Nützliche HERE-Dokumentation
 
-- Keine automatische Erzwingung anhand der Geraetesprache
-- Manuelle Sprachumschaltung im Settings-Screen
-- Lokale Speicherung der Sprache
-- Wiederherstellung beim naechsten Start
-
-Verwendete Dateien:
-
-- `src/i18n/index.ts`
-- `src/i18n/resources/de.ts`
-- `src/i18n/resources/en.ts`
-
-## Hinweise zur lokalen Speicherung
-
-Folgende Daten werden lokal gespeichert:
-
-- gewaehlte Sprache
-- letzte ausgewaehlte Ziele
-
-Verwendete Technologie:
-
-- `@react-native-async-storage/async-storage`
-
-Verhalten:
-
-- Letzte Ziele werden leichtgewichtig gespeichert
-- Doppelte Eintraege werden entfernt
-- Die Historie wird auf maximal 5 Eintraege begrenzt
-- Im Settings-Screen kann die Historie geloescht werden
-
-## Google API Keys einrichten
-
-Dieser Abschnitt ist absichtlich detailliert, damit die Einrichtung fuer private Nutzung sauber und nachvollziehbar bleibt.
-
-### Welche Google APIs werden benoetigt?
-
-Sie benoetigen mindestens diese beiden APIs:
-
-- Places API fuer Live-Vorschlaege und validierte Zielauswahl
-- Routes API fuer Distanz und aktuelle, verkehrsbezogene Fahrzeit
-
-Die App verwendet bewusst:
-
-- Places Autocomplete fuer Vorschlaege
-- Routes API `computeRoutes` fuer Fahrdaten
-
-Die App verwendet bewusst keine Kartenanzeige und keine Route auf einer Map.
-
-### Wie aktiviert man die APIs in der Google Cloud?
-
-1. Die [Google Cloud Console](https://console.cloud.google.com/) oeffnen.
-2. Ein Projekt auswaehlen oder neu anlegen.
-3. Billing aktivieren.
-4. Zu `APIs & Services` > `Library` wechseln.
-5. Nacheinander aktivieren:
-   - Places API
-   - Routes API
-
-### Wie erstellt man API Keys?
-
-1. Zu `APIs & Services` > `Credentials` wechseln.
-2. `Create credentials` auswaehlen.
-3. `API key` erstellen.
-4. Den Key sinnvoll benennen.
-
-### Wie sichert und beschraenkt man die Keys?
-
-Auch bei privater Nutzung sollte der Key nicht offen bleiben.
-
-Empfehlungen:
-
-1. Unter `API restrictions` nur die benoetigten APIs erlauben:
-   - Places API
-   - Routes API
-2. Unter `Application restrictions` spaeter eine moeglichst enge Einschraenkung setzen.
-3. Keine echten Keys im Repository committen.
-4. Keine Keys direkt im Quellcode hardcoden.
-
-### Wo werden die Keys im Projekt abgelegt?
-
-Der Key gehoert in die Datei `.env`:
-
-```env
-EXPO_PUBLIC_GOOGLE_MAPS_API_KEY=dein_google_maps_api_key
-```
-
-### Welche Beispiel-Konfigurationsdateien werden verwendet?
-
-- `.env.example`: Vorlage mit dem benoetigten Schluessel
-- `.gitignore`: Verhindert, dass echte `.env`-Dateien versehentlich committed werden
-- `app.config.ts`: Liest die Variable ein und stellt sie in Expo `extra` bereit
-- `src/config/env.ts`: Kapselt den Zugriff in der App
-
-## API-Layer und Wartbarkeit
-
-Die API-Zugriffe sind bewusst zentral gekapselt:
-
-- `fetchDestinationSuggestions(...)`
-- `fetchRouteMetrics(...)`
-
-Datei:
-
-- `src/services/googleMaps.ts`
-
-Vorteile:
-
-- klare Trennung von UI und Netzwerklogik
-- leichte spaetere Umstellung auf einen Proxy oder ein Backend
-- bessere Wartbarkeit
-- klarere Fehlerbehandlung
-
-## Troubleshooting / haeufige Probleme
-
-### Es erscheinen keine Zielvorschlaege
-
-Pruefen:
-
-- Ist `.env` vorhanden?
-- Ist `EXPO_PUBLIC_GOOGLE_MAPS_API_KEY` gesetzt?
-- Ist die Places API in Google Cloud aktiviert?
-- Ist Billing aktiv?
-- Ist der API Key eventuell zu streng eingeschraenkt?
-
-### Die Preisberechnung schlaegt fehl
-
-Pruefen:
-
-- Ist die Routes API aktiviert?
-- Hat der API Key Zugriff auf die Routes API?
-- Wurde wirklich ein Vorschlag aus der Liste ausgewaehlt?
-- Ist das Ziel per Auto erreichbar?
-
-### Die Sprache bleibt nicht gespeichert
-
-Pruefen:
-
-- Wurden die Abhaengigkeiten korrekt installiert?
-- Ist AsyncStorage verfuegbar?
-- Wurde lokaler App-Speicher manuell geloescht?
-
-### Android-Build startet nicht
-
-Pruefen:
-
-- Ist Android Studio korrekt eingerichtet?
-- Ist ein Emulator verfuegbar oder ein Geraet verbunden?
-- Wurden alle npm-Abhaengigkeiten installiert?
-- Ist die verwendete Node-Version aktuell genug?
-
-## Vorschlaege fuer moegliche zukuenftige Erweiterungen
-
-- Nacht- und Feiertagszuschlaege
-- mehrere Tarifprofile
-- Favoriten statt nur letzter Ziele
-- mehrere fixe Startpunkte
-- Proxy-Backend fuer API-Key-Schutz
-- Export oder Teilen einer Preisaufschluesselung
-- Vergleich mit OeV oder Ride-Hailing-Diensten
-
-## Startrelevante Kommandos
-
-```bash
-npm install
-copy .env.example .env
-npm run start
-npm run android
-```
-
-## Hinweise zur Code-Qualitaet
-
-Das Projekt ist bewusst so aufgebaut, dass UI, Tariflogik, Konfiguration, Lokalisierung und API-Zugriffe klar getrennt bleiben. Die App verwendet TypeScript, sinnvolle Dateinamen und eine kleine, fuer die App-Groesse passende State-Struktur ohne Overengineering.
-
-## Externe Referenzen
-
-Fuer zentrale technische Entscheidungen wurden aktuelle offizielle Dokumentationen verwendet:
-
-- Expo-Dokumentation zu `expo-build-properties`
-- Expo-Dokumentation zu SDK 54 und React Native 0.81
-- Google-Dokumentation zu Places Autocomplete
-- Google-Dokumentation zur Routes API `computeRoutes`
+- [HERE Autosuggest und Search](https://docs.here.com/geocoding-and-search/docs/introduction-to-here-geocoding-search-api-v7)
+- [HERE Lookup nach Auswahl eines Vorschlags](https://docs.here.com/routing/docs/routing-v8-waypoints-from-search)
+- [HERE Routing API v8 Einstieg](https://docs.here.com/routing/docs/routing-v8-get-started)
+- [Verkehr in HERE Routing](https://docs.here.com/routing/docs/routing-v8-traffic-in-routing)
+- [HERE Preise und Limits](https://www.here.com/get-started/pricing)

@@ -58,7 +58,11 @@ const styles = StyleSheet.create({
     gap: theme.spacing.lg,
   },
   gradient: {
-    ...StyleSheet.absoluteFillObject,
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
     borderBottomLeftRadius: 40,
     borderBottomRightRadius: 40,
   },

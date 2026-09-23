@@ -1,7 +1,7 @@
 import { createContext, PropsWithChildren, useContext, useEffect, useMemo, useState } from 'react';
 import i18n from 'i18next';
 
-import type { AppLanguage, DestinationSuggestion } from '@/types/google';
+import type { AppLanguage, DestinationSuggestion } from '@/types/location';
 import {
   clearRecentDestinationsStorage,
   loadRecentDestinations,

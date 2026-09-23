@@ -14,16 +14,16 @@ export const en = {
       german: 'German',
       english: 'English',
       recentDestinations: 'Recent destinations',
-      poweredByGoogle: 'Powered by Google',
-      validatedSelection: 'Google-validated',
+      poweredByHere: 'Powered by HERE',
+      validatedSelection: 'Verified by HERE',
     },
     home: {
       heroTitle: 'Estimate taxi fares from Zurich Airport in seconds',
       heroSubtitle:
-        'Choose a Google-validated destination and the app calculates distance, traffic-aware travel time, and the estimated fare.',
+        'Choose a HERE-verified destination and the app calculates distance, traffic-aware travel time, and the estimated fare.',
       destinationPlaceholder: 'Enter destination address or place',
-      destinationHint: 'Calculation is only available after selecting a Google suggestion.',
-      destinationDropdownLabel: 'Google suggestions',
+      destinationHint: 'Calculation is only available after selecting a HERE suggestion.',
+      destinationDropdownLabel: 'HERE suggestions',
       resultTitle: 'Estimated fare',
       baseFare: 'Base fare',
       distanceCost: 'Distance cost',
@@ -31,22 +31,24 @@ export const en = {
       totalFare: 'Total fare',
       distance: 'Distance',
       duration: 'Travel time',
-      trafficHint: 'Travel time is based on current Google traffic data.',
+      trafficHint: 'Travel time is based on current HERE traffic data.',
       emptyTitle: 'Ready for a new estimate',
       emptyText:
         'Type a destination, choose a validated suggestion, and then start the calculation.',
       loadingTitle: 'Calculating your trip',
       loadingText:
-        'We are fetching distance and live travel time from Google before applying the configured fare tariff.',
+        'We are fetching distance and live travel time from HERE before applying the configured fare tariff.',
       suggestionsLoading: 'Loading suggestions...',
       noSuggestions: 'No matching suggestions found.',
       errors: {
         missing_api_key:
-          'No Google API key found. Add EXPO_PUBLIC_GOOGLE_MAPS_API_KEY to your .env file.',
+          'No HERE API key found. Add EXPO_PUBLIC_HERE_API_KEY to your .env file.',
         autocomplete_failed:
           'Destination suggestions could not be loaded right now. Please try again.',
+        destination_lookup_failed:
+          'The selected destination could not be resolved. Please choose another HERE suggestion.',
         route_failed:
-          'Trip data could not be loaded. Please verify your API key and try again.',
+          'Trip data could not be loaded. Please verify your HERE API key and try again.',
         route_unavailable:
           'No driving estimate is available for this destination. Please choose a different suggestion.',
         default: 'An unexpected error occurred. Please try again.',

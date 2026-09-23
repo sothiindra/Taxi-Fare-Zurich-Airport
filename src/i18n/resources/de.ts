@@ -14,16 +14,16 @@ export const de = {
       german: 'Deutsch',
       english: 'Englisch',
       recentDestinations: 'Letzte Ziele',
-      poweredByGoogle: 'Powered by Google',
-      validatedSelection: 'Google-validiert',
+      poweredByHere: 'Powered by HERE',
+      validatedSelection: 'Von HERE geprüft',
     },
     home: {
       heroTitle: 'Taxikosten ab Flughafen Zürich sofort schätzen',
       heroSubtitle:
-        'Wählen Sie ein von Google validiertes Ziel. Die App berechnet daraus Distanz, verkehrsabhängige Fahrzeit und den geschätzten Fahrpreis.',
+        'Wählen Sie ein von HERE geprüftes Ziel. Die App berechnet daraus Distanz, verkehrsabhängige Fahrzeit und den geschätzten Fahrpreis.',
       destinationPlaceholder: 'Zieladresse oder Ort eingeben',
-      destinationHint: 'Die Berechnung ist erst nach Auswahl eines Google-Vorschlags möglich.',
-      destinationDropdownLabel: 'Google-Vorschläge',
+      destinationHint: 'Die Berechnung ist erst nach Auswahl eines HERE-Vorschlags möglich.',
+      destinationDropdownLabel: 'HERE-Vorschläge',
       resultTitle: 'Estimated fare',
       baseFare: 'Grundgebühr',
       distanceCost: 'Distanzkosten',
@@ -31,22 +31,24 @@ export const de = {
       totalFare: 'Gesamtpreis',
       distance: 'Distanz',
       duration: 'Fahrzeit',
-      trafficHint: 'Die Fahrzeit basiert auf den aktuellen Verkehrsdaten von Google.',
+      trafficHint: 'Die Fahrzeit basiert auf den aktuellen Verkehrsdaten von HERE.',
       emptyTitle: 'Bereit für eine neue Schätzung',
       emptyText:
         'Geben Sie ein Ziel ein, wählen Sie einen validierten Vorschlag und starten Sie danach die Berechnung.',
       loadingTitle: 'Fahrt wird berechnet',
       loadingText:
-        'Wir holen Distanz und aktuelle Fahrzeit von Google und wenden danach den hinterlegten Tarif an.',
+        'Wir holen Distanz und aktuelle Fahrzeit von HERE und wenden danach den hinterlegten Tarif an.',
       suggestionsLoading: 'Vorschläge werden geladen...',
       noSuggestions: 'Keine passenden Vorschläge gefunden.',
       errors: {
         missing_api_key:
-          'Kein Google API Key gefunden. Bitte hinterlegen Sie EXPO_PUBLIC_GOOGLE_MAPS_API_KEY in Ihrer .env-Datei.',
+          'Kein HERE API Key gefunden. Bitte hinterlegen Sie EXPO_PUBLIC_HERE_API_KEY in Ihrer .env-Datei.',
         autocomplete_failed:
           'Die Zielvorschläge konnten gerade nicht geladen werden. Bitte versuchen Sie es erneut.',
+        destination_lookup_failed:
+          'Das ausgewählte Ziel konnte nicht aufgelöst werden. Bitte wählen Sie einen anderen HERE-Vorschlag.',
         route_failed:
-          'Die Fahrtdaten konnten nicht geladen werden. Bitte prüfen Sie Ihren API Key und versuchen Sie es erneut.',
+          'Die Fahrtdaten konnten nicht geladen werden. Bitte prüfen Sie Ihren HERE API Key und versuchen Sie es erneut.',
         route_unavailable:
           'Für dieses Ziel konnten keine Fahrtdaten berechnet werden. Bitte wählen Sie einen anderen Vorschlag.',
         default:

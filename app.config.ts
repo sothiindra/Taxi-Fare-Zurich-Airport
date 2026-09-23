@@ -1,6 +1,6 @@
 import type { ConfigContext, ExpoConfig } from '@expo/config';
 
-const GOOGLE_MAPS_API_KEY = process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY ?? '';
+const HERE_API_KEY = process.env.EXPO_PUBLIC_HERE_API_KEY ?? '';
 
 export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
@@ -10,35 +10,37 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   orientation: 'portrait',
   userInterfaceStyle: 'light',
   scheme: 'taxifarezurichairport',
-  jsEngine: 'hermes',
   icon: './assets/icon.png',
-  splash: {
-    image: './assets/splash-icon.png',
-    resizeMode: 'contain',
-    backgroundColor: '#F4F7FB',
-  },
   android: {
     package: 'com.taxifarezurichairport.app',
     softwareKeyboardLayoutMode: 'resize',
-    "icon": "./assets/icon.png",
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon-foreground.png",
-        "backgroundImage": "./assets/adaptive-icon-background.png"
-      },
+    icon: './assets/icon.png',
+    adaptiveIcon: {
+      foregroundImage: './assets/adaptive-icon-foreground.png',
+      backgroundImage: './assets/adaptive-icon-background.png',
+    },
   },
   plugins: [
+    [
+      'expo-splash-screen',
+      {
+        image: './assets/splash-icon.png',
+        imageWidth: 200,
+        resizeMode: 'contain',
+        backgroundColor: '#F4F7FB',
+      },
+    ],
     [
       'expo-build-properties',
       {
         android: {
-          compileSdkVersion: 35,
-          targetSdkVersion: 35,
-          buildToolsVersion: '35.0.0',
+          compileSdkVersion: 36,
+          targetSdkVersion: 36,
         },
       },
     ],
   ],
   extra: {
-    googleMapsApiKey: GOOGLE_MAPS_API_KEY,
+    hereApiKey: HERE_API_KEY,
   },
 });

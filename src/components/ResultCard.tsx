@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 
 import { AppCard } from '@/components/AppCard';
 import { theme } from '@/theme';
-import type { AppLanguage, FareBreakdown } from '@/types/google';
+import type { AppLanguage, FareBreakdown } from '@/types/location';
 import { formatChf, formatDistanceKm, formatMinutes } from '@/utils/format';
 
 type ResultCardProps = {

@@ -1,5 +1,5 @@
 import { TARIFF } from '@/constants/tariff';
-import type { FareBreakdown, RouteMetrics } from '@/types/google';
+import type { FareBreakdown, RouteMetrics } from '@/types/location';
 
 function roundCurrency(value: number): number {
   return Math.round(value * 100) / 100;

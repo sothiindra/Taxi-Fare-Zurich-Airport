@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { MAX_RECENT_DESTINATIONS, STORAGE_KEYS } from '@/constants/app';
-import type { AppLanguage, DestinationSuggestion } from '@/types/google';
+import type { AppLanguage, DestinationSuggestion } from '@/types/location';
 
 export async function loadStoredLanguage(): Promise<AppLanguage | null> {
   const value = await AsyncStorage.getItem(STORAGE_KEYS.language);
@@ -20,7 +20,9 @@ export async function loadRecentDestinations(): Promise<DestinationSuggestion[]>
 
   try {
     const parsed = JSON.parse(value) as DestinationSuggestion[];
-    return Array.isArray(parsed) ? parsed : [];
+    return Array.isArray(parsed)
+      ? parsed.filter((item) => Boolean(item.id && item.fullText))
+      : [];
   } catch {
     return [];
   }
@@ -30,7 +32,7 @@ export async function saveRecentDestination(
   destination: DestinationSuggestion,
 ): Promise<DestinationSuggestion[]> {
   const current = await loadRecentDestinations();
-  const deduplicated = current.filter((item) => item.placeId !== destination.placeId);
+  const deduplicated = current.filter((item) => item.id !== destination.id);
   const next = [destination, ...deduplicated].slice(0, MAX_RECENT_DESTINATIONS);
   await AsyncStorage.setItem(STORAGE_KEYS.recentDestinations, JSON.stringify(next));
   return next;

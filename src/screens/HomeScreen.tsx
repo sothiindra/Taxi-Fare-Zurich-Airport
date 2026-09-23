@@ -12,9 +12,9 @@ import { SectionTitle } from '@/components/SectionTitle';
 import { SuggestionList } from '@/components/SuggestionList';
 import { ZURICH_AIRPORT } from '@/constants/app';
 import { useSettings } from '@/providers/SettingsProvider';
-import { fetchDestinationSuggestions, fetchRouteMetrics } from '@/services/googleMaps';
+import { fetchDestinationSuggestions, fetchRouteMetrics } from '@/services/hereLocation';
 import { calculateFare } from '@/utils/fare';
-import type { DestinationSuggestion, FareBreakdown } from '@/types/google';
+import type { DestinationSuggestion, FareBreakdown } from '@/types/location';
 
 export function HomeScreen() {
   const { t } = useTranslation();
@@ -72,6 +72,7 @@ export function HomeScreen() {
     switch (errorCode) {
       case 'missing_api_key':
       case 'autocomplete_failed':
+      case 'destination_lookup_failed':
       case 'route_failed':
       case 'route_unavailable':
         return t(`home.errors.${errorCode}`);

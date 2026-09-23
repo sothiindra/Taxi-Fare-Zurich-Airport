@@ -1,7 +1,7 @@
 export type AppLanguage = 'de' | 'en';
 
 export type DestinationSuggestion = {
-  placeId: string;
+  id: string;
   title: string;
   subtitle: string;
   fullText: string;

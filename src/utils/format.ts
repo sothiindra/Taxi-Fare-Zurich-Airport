@@ -1,4 +1,4 @@
-import type { AppLanguage } from '@/types/google';
+import type { AppLanguage } from '@/types/location';
 
 const localeMap: Record<AppLanguage, string> = {
   de: 'de-CH',

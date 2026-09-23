@@ -14,7 +14,7 @@ import { useTranslation } from 'react-i18next';
 
 import { AppCard } from '@/components/AppCard';
 import { theme } from '@/theme';
-import type { DestinationSuggestion } from '@/types/google';
+import type { DestinationSuggestion } from '@/types/location';
 
 type DestinationSearchCardProps = {
   query: string;
@@ -127,7 +127,7 @@ export function DestinationSearchCard({
                   >
                     {suggestions.map((item) => (
                       <Pressable
-                        key={item.placeId}
+                        key={item.id}
                         onPress={() => onSelectSuggestion(item)}
                         style={({ pressed }) => [styles.item, pressed && styles.itemPressed]}
                       >
@@ -138,7 +138,7 @@ export function DestinationSearchCard({
                   </ScrollView>
                 )}
 
-                <Text style={styles.poweredBy}>{t('common.poweredByGoogle')}</Text>
+                <Text style={styles.poweredBy}>{t('common.poweredByHere')}</Text>
               </View>
             </View>
           ) : null}

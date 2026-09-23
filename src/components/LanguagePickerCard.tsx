@@ -2,7 +2,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { AppCard } from '@/components/AppCard';
 import { theme } from '@/theme';
-import type { AppLanguage } from '@/types/google';
+import type { AppLanguage } from '@/types/location';
 
 type LanguagePickerCardProps = {
   title: string;
